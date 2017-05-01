@@ -1,7 +1,7 @@
 """
 The purpose of this file is to load datasets that will be used throughout the training.
 ---
-Data is saved to disk the first time needed. Subsequently, running this script should take instantaneous.
+Data is saved to disk the first time needed. Subsequently, running this script should be instantaneous.
 """
 import sys
 import os
