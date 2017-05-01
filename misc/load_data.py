@@ -8,6 +8,7 @@ import os
 
 from tensorflow.examples.tutorials.mnist import input_data
 from keras.applications.vgg16 import VGG16
+from keras.datasets import *
 
 # ---------------------------------------------------------------------------------------------------------------------
 # MNIST -- hand-written digits
@@ -15,6 +16,13 @@ from keras.applications.vgg16 import VGG16
 # DATA_DIR is where the MNIST data will be downloaded to. Later, set the path accordingly to prevent an extra download.
 DATA_DIR = os.path.join(os.environ["HOME"], "data") if not 'win' in sys.platform else "c:\\tmp\\data"
 data = input_data.read_data_sets(DATA_DIR, one_hot=True)
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Boston
+# ---------------------------------------------------------------------------------------------------------------------
+boston_housing.load_data()
+
 
 # ---------------------------------------------------------------------------------------------------------------------
 # The "topless" VGG model
