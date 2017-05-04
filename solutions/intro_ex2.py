@@ -1,12 +1,15 @@
 """
 We add a bias term to the regression model. To do so we need to change only 2 lines of code.
-First, we define a bias variable:
-b = tf.Variable(0.0, dtype=tf.float32)
+First, we define a bias variable (one for each of the 10 digits):
+b = tf.Variable(tf.zeros([10]))
 
 Next, we add it to the model:
 y_pred = tf.matmul(x, W) + b
 
-So the model is now: y_pred = Wx + b
+So the model is now:
+    y_pred(i) = <x, w_i> + b_i,
+and in matrix form:
+    y_pred = Wx + b
 """
 import sys
 import tensorflow as tf
@@ -28,7 +31,7 @@ MINIBATCH_SIZE = 100
 # We start by building the model
 x = tf.placeholder(tf.float32, [None, 784])
 W = tf.Variable(tf.zeros([784, 10]))
-b = tf.Variable(0.0, dtype=tf.float32)
+b = tf.Variable(tf.zeros([10]))
 
 y_true = tf.placeholder(tf.float32, [None, 10])
 y_pred = tf.matmul(x, W) + b
