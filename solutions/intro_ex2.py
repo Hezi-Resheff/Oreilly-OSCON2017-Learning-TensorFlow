@@ -1,10 +1,15 @@
 """
-We construct a confusion matrix for the softmax regression on MNIST digits.
-1. Model is built and run like before.
-2. During the test phase we use y_true, y_pred in the fetch argument, since these
-are the vars we will need for the confusion matrix.
-3. We then use the built-in confusion_matrix method in sklearn.metrics to complete
-the task.
+We add a bias term to the regression model. To do so we need to change only 2 lines of code.
+First, we define a bias variable (one for each of the 10 digits):
+b = tf.Variable(tf.zeros([10]))
+
+Next, we add it to the model:
+y_pred = tf.matmul(x, W) + b
+
+So the model is now:
+    y_pred(i) = <x, w_i> + b_i,
+and in matrix form:
+    y_pred = Wx + b
 """
 import sys
 import tensorflow as tf
@@ -26,8 +31,10 @@ MINIBATCH_SIZE = 100
 # We start by building the model
 x = tf.placeholder(tf.float32, [None, 784])
 W = tf.Variable(tf.zeros([784, 10]))
+b = tf.Variable(tf.zeros([10]))
+
 y_true = tf.placeholder(tf.float32, [None, 10])
-y_pred = tf.matmul(x, W)
+y_pred = tf.matmul(x, W) + b
 
 cross_entropy = \
     tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_pred, labels=y_true))
@@ -46,14 +53,7 @@ with tf.Session() as sess:
         sess.run(gd_step, feed_dict={x: batch_xs, y_true: batch_ys})
 
     # Test
-    # Here we use the fetches [y_true, y_pred] since those are the vars we will need to
-    # construct the confusion matrix.
-    y_true, y_pred = sess.run([y_true, y_pred],
-                              feed_dict={x: data.test.images, y_true: data.test.labels})
+    is_correct, acc = sess.run([correct_mask, accuracy],
+                               feed_dict={x: data.test.images, y_true: data.test.labels})
 
-# confusion_matrix() requires the actual predictions, not the probability vectors, so we use
-# .argmax(axis=1) to select the class with the largest probability.
-conf_mat = confusion_matrix(y_true.argmax(axis=1), y_pred.argmax(axis=1))
-
-# pd.DataFrame is used for the nice print format
-print(pd.DataFrame(conf_mat))
+print("Accuracy: {:.4}%".format(acc*100))
