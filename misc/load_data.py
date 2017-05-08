@@ -14,7 +14,7 @@ from keras.datasets import *
 # MNIST -- hand-written digits
 # ---------------------------------------------------------------------------------------------------------------------
 # DATA_DIR is where the MNIST data will be downloaded to. Later, set the path accordingly to prevent an extra download.
-DATA_DIR = os.path.join(os.environ["HOME"], "data") if not 'win' in sys.platform else "c:\\tmp\\data"
+DATA_DIR = os.path.join(os.environ["HOME"], "data") if not 'win32' in sys.platform else "c:\\tmp\\data"
 data = input_data.read_data_sets(DATA_DIR, one_hot=True)
 
 
