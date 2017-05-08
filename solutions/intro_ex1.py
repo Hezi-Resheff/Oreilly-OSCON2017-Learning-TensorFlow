@@ -48,12 +48,12 @@ with tf.Session() as sess:
     # Test
     # Here we use the fetches [y_true, y_pred] since those are the vars we will need to
     # construct the confusion matrix.
-    y_true, y_pred = sess.run([y_true, y_pred],
+    y_true_vec, y_pred_vec = sess.run([y_true, y_pred],
                               feed_dict={x: data.test.images, y_true: data.test.labels})
 
 # confusion_matrix() requires the actual predictions, not the probability vectors, so we use
 # .argmax(axis=1) to select the class with the largest probability.
-conf_mat = confusion_matrix(y_true.argmax(axis=1), y_pred.argmax(axis=1))
+conf_mat = confusion_matrix(y_true_vec.argmax(axis=1), y_pred_vec.argmax(axis=1))
 
 # pd.DataFrame is used for the nice print format
 print(pd.DataFrame(conf_mat))
